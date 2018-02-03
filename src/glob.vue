@@ -54,7 +54,7 @@ export default
 				console.log(val)
 				if (val == '.')
 				{
-					throw new Error( "un mur!")
+					throw("un mur!")
 				}
 				this.piano.triggerAttackRelease(
 					Tone.Frequency(59 + val, "midi").toNote(), '8n')

@@ -1,8 +1,8 @@
 <template>
 <div id="app" >
   <events></events>
-  <router-view/>
-  <video id="video" loop autoplay src="static/fog.mp4"></video>
+  <!-- <router-view/> -->
+  <!-- <video id="video" loop autoplay src="static/fog.mp4"></video> -->
 </div>
 </template>
 
