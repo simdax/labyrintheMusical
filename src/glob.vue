@@ -57,24 +57,35 @@ export default
 				this.cursor.x += x
 				this.cursor.y += y
 				let val = this.map[this.cursor.y][this.cursor.x]
-				//				console.log(this.map)
+				console.log("val =", val)
 				if (val == 'D')
 					mel.start(0)
-				if (val == '.')
-					throw("un mur!")
-				this.piano.triggerAttackRelease(
-					Tone.Frequency(59 + val, "midi").toNote(), '8n')
-				this.vals.push(val)
+				else if (val == '.') {
+					console.log('wall!')
+					throw('wall')
+				}
+				else if (val == 'X') {
+					console.log('drowned!')
+					throw('drowned')
+				}
+				else 
+				{
+			 		this.piano.triggerAttackRelease(
+						Tone.Frequency(59 + val, "midi").toNote(), '8n')
+					this.vals.push(val)
+				}
 			}
 			catch (e) {
 				error.start()
-				console.log("outside", this.val)
-				this.piano.triggerRelease()
-				this.cursor.x -= x
-				this.cursor.y -= y
-			}
-			finally {
-				//				this.
+				console.log(e ? 'inconnu' : e)
+					this.piano.triggerRelease()
+					this.cursor.x -= x
+					this.cursor.y -= y
+				if (e == 'drowned') {
+					this.cursor.x = 0
+					this.cursor.y = 0
+					this.vals = []
+				}
 			}
 		}
 	}

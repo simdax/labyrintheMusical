@@ -1,14 +1,13 @@
 <template>
 <div id="app" >
   <events></events>
-  <!-- <router-view/> -->
+  <router-view/>
   <!-- <video id="video" loop autoplay src="static/fog.mp4"></video> -->
 </div>
 </template>
 
 <script>
 
-import comp from '@/components/compo2'
 import EventBus from './event-bus.js';
 import Events from '@/glob.vue';
 import Tone from 'tone'
@@ -17,7 +16,7 @@ require('@/music/read_mel.js')
 
 export default {
 	name: 'App',
-	components: {comp, Events}
+	components: {Events}
 }
 </script>
 
