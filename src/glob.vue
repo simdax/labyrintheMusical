@@ -19,23 +19,14 @@
 
 import GlobalEvents from 'vue-global-events'
 import Tone from 'tone'
-import map from '@/maps/decode'
-import print from '@/maps/print_map'
-import getD from '@/maps/get_D_pos'
-import {synth, piano, error} from '@/music.js'
-import melodie from '@/music/read_mel.js'
-import go from '@/go'
 
-function checkSolution() {
-	let flag = 0
-	this.vals.forEach(function(val, index) {
-		if (this.sol[index] == val) {
-			flag += 1
-		}
-	}.bind(this))
-	if (flag == this.sol.length)
-		this.win = 1
-}
+import print from '@/maps/print_map'
+import decode from '@/maps/decode'
+import getD from '@/maps/get_D_pos'
+import get_mel from '@/music/read_mel.js'
+import {synth, piano, error} from '@/music.js'
+import go from '@/go'
+import checkSolution from "./check.js"
 
 export default
 {
@@ -46,7 +37,7 @@ export default
 			win: 0,
 			sol: ["1","2","3"],
 			playable: true,
-			map: map,
+			map: [], melodie: [],
 			cursor: {x: 0, y: 0},
 			print, piano, synth, error,
 			vals: []
@@ -57,7 +48,10 @@ export default
 			return this.print(this.map, this.cursor)
 		}
 	},
-	mounted () {
+	created () {
+		decode.bind(this)(0)
+		get_mel.bind(this)(0)
+		console.log(this.melodie)
 		this.init()
 	},
 	methods:{
@@ -68,13 +62,16 @@ export default
 			this.play()
 		},
 		play(){
-			let dur = melodie[melodie.length - 1].time
+			let dur = this.melodie[this.melodie.length - 2].time
+			console.log(dur)
 			new Tone.Part((time, val) => {
 				this.playable = val
 			}, [[0, false], [dur, true]]).start()
 			new Tone.Part((time, event) => {
-				piano.triggerAttackRelease(event.note, event.dur)
-			}, melodie).start()
+				try{	
+					piano.triggerAttackRelease(event.note, event.dur)				
+				} catch (e) {}
+			}, this.melodie).start()
 		},
 		mouse(ev){
 			console.log()
