@@ -19,20 +19,20 @@
 
 import GlobalEvents from 'vue-global-events';
 import map from '@/maps/decode';
-import sol from '@/maps/solution';
+// import sol from '@/maps/solution';
 import print from '@/maps/print_map';
 import {synth, piano, error} from '@/music.js';
 import Tone from 'tone';
 
-function checkSolution(vals) {
-	vals.reserve()
-	while (sol[n] && vals[n + 1] == sol[n]) {
-		n++;
-	}
-	if (sol[n])
-		return ()
-	else
-		next level/
+function checkSolution() {
+	let flag = 0
+	this.vals.forEach(function(val, index) {
+		if (this.sol[index] == val) {
+			flag += 1
+		}
+	}.bind(this))
+	if (flag == this.sol.length)
+		this.win = 1
 }
 
 export default
@@ -41,10 +41,12 @@ export default
 	components: {GlobalEvents},
 	data(){
 		return {
+			win: 0,
 			map: map,
 			cursor: {x:0, y:0},
 			print, piano, synth,
-			vals: []
+			vals: [],
+			sol: ["1","2","3"]
 		}
 	},
 	computed: {
@@ -89,6 +91,9 @@ export default
 				}
 			}
 			finally {
+				checkSolution.bind(this)()
+				if (this.win)
+					console.log("oh putain")
 			}
 		}
 	}
