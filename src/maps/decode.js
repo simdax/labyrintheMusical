@@ -1,6 +1,6 @@
 import map from './0.txt'
 
-let result = [[]]
+let result = []
 let j = 0
 var lines = map.split('\n');
 lines.forEach(line =>

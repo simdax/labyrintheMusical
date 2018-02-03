@@ -23,11 +23,13 @@ import print from '@/maps/print_map'
 import {synth, piano, error} from '@/music.js'
 import Tone from 'tone'
 
+console.log("fsdafs", map)
+
 export default
 {
 	name: 'events',
 	components: {GlobalEvents},
-	data(){
+	data() {
 		return {
 			map: map,
 			cursor: {x:0, y:0},
@@ -51,11 +53,9 @@ export default
 				this.cursor.x += x
 				this.cursor.y += y
 				let val = this.map[this.cursor.y][this.cursor.x]
-				console.log(val)
+//				console.log(this.map)
 				if (val == '.')
-				{
 					throw("un mur!")
-				}
 				this.piano.triggerAttackRelease(
 					Tone.Frequency(59 + val, "midi").toNote(), '8n')
 				this.vals.push(val)
