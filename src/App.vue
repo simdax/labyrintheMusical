@@ -14,7 +14,7 @@ import Tone from 'tone'
 
 export default {
 	name: 'App',
-	components: {comp, Events}
+	components: {Events}
 }
 </script>
 
