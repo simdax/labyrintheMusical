@@ -73,9 +73,16 @@ export default
 				if (e == 'drowned') {
 					this.cursor.x = 0
 					this.cursor.y = 0
+					clean_array(vals)
 				}
 			}
 			finally {
+			}
+		},
+		clean_array(vals)
+		{
+			while (vals) {
+				vals.pop()
 			}
 		}
 	}
