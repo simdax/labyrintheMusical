@@ -20,6 +20,10 @@ let piano = new Tone.Sampler({
 	'baseUrl' : '/static/sounds/'
 }).toMaster(); 
 
+let error = new Tone.Player({
+	url: "/static/error.wav"
+}).toMaster()
+
 //window.p = piano
 
-export {piano, synth}
+export {piano, synth, error}

@@ -12,7 +12,7 @@
 
 import GlobalEvents from 'vue-global-events';
 import map from '@/map';
-import {synth, piano} from '@/music.js'
+import {synth, piano, error} from '@/music.js'
 import Tone from 'tone'
 
 export default
@@ -39,8 +39,9 @@ export default
 				this.piano.triggerAttackRelease(
 					Tone.Frequency(59 + this.val, "midi").toNote(), '8n')
 			}
-			catch (error) {
-				console.log("pas de note a", this.val , error)
+			catch (e) {
+				error.start()
+				console.log("pas de note a", this.val)// error)
 				this.piano.triggerRelease()
 				this.val = 0
 				this.cursor.x = 0;
