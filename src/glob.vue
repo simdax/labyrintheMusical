@@ -24,6 +24,7 @@ import print from '@/maps/print_map'
 import getD from '@/maps/get_D_pos'
 import {synth, piano, error} from '@/music.js'
 import melodie from '@/music/read_mel.js'
+import go from '@/go'
 
 let mel = new Tone.Part((time, event) => {
 	console.log(event)
@@ -36,9 +37,10 @@ export default
 	components: {GlobalEvents},
 	data() {
 		return {
+			playable: true,
 			map: map,
 			cursor: {x: 0, y: 0},
-			print, piano, synth,
+			print, piano, synth, error,
 			vals: []
 		}
 	},
@@ -57,8 +59,11 @@ export default
 			this.cursor.y = d.y
 		},
 		play(){
+			let dur = melodie[melodie.length - 1].time
+			new Tone.Part((time, val) => {
+				this.playable = val
+			}, [[0, false], [dur, true]]).start()
 			new Tone.Part((time, event) => {
-				console.log(event)
 				synth.triggerAttackRelease(event.note, event.dur)
 			}, melodie).start()
 		},
@@ -66,41 +71,8 @@ export default
 			console.log()
 		},
 		go (x, y) {
-			try {
-				this.cursor.x += x
-				this.cursor.y += y
-				let val = this.map[this.cursor.y][this.cursor.x]
- 				console.log("val =", val)
-				if (val == 'D')
-					this.play()
-				else if (val == '.') {
-					console.log('wall!')
-					throw('wall')
-				}
-				else if (val == 'X') {
-					console.log('drowned!')
-					throw('drowned')
-				}
-				else 
-				{
-					val = parseInt(val)
-					//console.log(val, Tone.Frequency(60 + val, "midi").toNote())
-			 		this.piano.triggerAttackRelease(
-					Tone.Frequency(59 + val, "midi").toNote(), '8n')
-					this.vals.push(val)
-				}
-			}
-			catch (e) {
-				error.start()
-				console.log(e ? 'inconnu' : e)
-					this.piano.triggerRelease()
-					this.cursor.x -= x
-					this.cursor.y -= y
-				if (e == 'drowned') {
-					this.init()
-					this.vals = []
-				}
-			}
+			if (this.playable)
+				go.bind(this)(x, y)
 		}
 	}
 }
