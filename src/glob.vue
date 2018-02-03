@@ -8,7 +8,7 @@
 	@mousedown="mouse($event)"
 	/>
   <div>
-	<div id="map" v-for="line in map">
+	<div id="map" v-for="line in mapPrint">
 		{{line}}
 	</div>
   </div>
@@ -31,25 +31,31 @@ export default
 		return {
 			map: map,
 			cursor: {x:0, y:0},
-			piano, synth,
+			print, piano, synth,
 			vals: []
 		}
 	},
+	computed: {
+		mapPrint(){
+			return this.print(this.map, this.cursor)
+		}
+	},
 	mounted (){
-		//print(this.map, this.cursor)
 	},
 	methods:{
 		mouse(ev){
 			console.log()
 		},
-		go (y, x) {
+		go (x, y) {
 			try {
 				this.cursor.x += x
 				this.cursor.y += y
-				print(this.map, this.cursor)
 				let val = this.map[this.cursor.y][this.cursor.x]
-				if (this.val == '.')
+				console.log(val)
+				if (val == '.')
+				{
 					throw("un mur!")
+				}
 				this.piano.triggerAttackRelease(
 					Tone.Frequency(59 + val, "midi").toNote(), '8n')
 				this.vals.push(val)
