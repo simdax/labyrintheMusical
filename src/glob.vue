@@ -23,6 +23,14 @@ import print from '@/maps/print_map'
 import {synth, piano, error} from '@/music.js'
 import Tone from 'tone'
 
+function clean_array(vals)
+{
+	console.log(vals)
+	vals.forEach(val => {
+		val = 0
+	})
+}
+
 export default
 {
 	name: 'events',
@@ -73,16 +81,8 @@ export default
 				if (e == 'drowned') {
 					this.cursor.x = 0
 					this.cursor.y = 0
-					clean_array(vals)
+					this.vals = []
 				}
-			}
-			finally {
-			}
-		},
-		clean_array(vals)
-		{
-			while (vals) {
-				vals.pop()
 			}
 		}
 	}
