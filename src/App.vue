@@ -8,7 +8,6 @@
 
 <script>
 
-import comp from '@/components/compo2'
 import EventBus from './event-bus.js';
 import Events from '@/glob.vue';
 import Tone from 'tone'
