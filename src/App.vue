@@ -13,6 +13,8 @@ import EventBus from './event-bus.js';
 import Events from '@/glob.vue';
 import Tone from 'tone'
 
+require('@/music/read_mel.js')
+
 export default {
 	name: 'App',
 	components: {comp, Events}

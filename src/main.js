@@ -3,10 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
-require("@/maps/decode")
+import Tone from 'tone'
 
 Vue.config.productionTip = false
+Tone.Transport.start();
 
 /* eslint-disable no-new */
 new Vue({
