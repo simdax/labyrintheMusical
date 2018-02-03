@@ -5,7 +5,7 @@
 	@keydown.39="go(1, 0)"
 	@keydown.38="go(0, -1)"
 	@keydown.40="go(0, 1)"
-	@mousedown="mouse($event)"
+	@keydown.space="init"
 	/>
   <div>
 	<div id="map" v-for="line in mapPrint">
@@ -38,9 +38,9 @@ export default
 	data() {
 		return {
 			win: 0,
-			sol: ["1","2","3"],
+			level: 0,
 			playable: true,
-			map: [], melodie: [],
+			map: [], melodie: [], sol: [],
 			cursor: {x: 0, y: 0},
 			print, piano, synth, error,
 			vals: []
@@ -52,14 +52,20 @@ export default
 		}
 	},
 	created () {
-		decode.bind(this)(2)
-		get_mel.bind(this)(2)
-		this.init()
+		this.create(0)
 	},
 	methods:{
-		
+		create(){
+			this.win = 0
+			this.map = []
+			this.melodie = []
+			decode.bind(this)(this.level)
+			get_mel.bind(this)(this.level)
+			this.init()
+		},
 		init (){
 			let d = getD(this.map)
+			this.vals = []
 			this.cursor.x = d.x
 			this.cursor.y = d.y
 			this.play()
@@ -81,7 +87,10 @@ export default
 				go.bind(this)(x, y)
 				checkSolution.bind(this)()			
 				if (this.win)
-					console.log("oh putain")
+				{
+					this.level += 1
+					this.create()
+				}
 			}
 		}
 	}
