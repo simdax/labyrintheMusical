@@ -20,6 +20,7 @@
 import GlobalEvents from 'vue-global-events';
 import map from '@/maps/decode';
 import print from '@/maps/print_map'
+import getD from '@/maps/get_D_pos'
 import {synth, piano, error} from '@/music.js'
 import Tone from 'tone'
 import melodie from '@/music/read_mel.js'
@@ -36,7 +37,7 @@ export default
 	data() {
 		return {
 			map: map,
-			cursor: {x:0, y:0},
+			cursor: {x: 0, y: 0},
 			print, piano, synth,
 			vals: []
 		}
@@ -46,9 +47,15 @@ export default
 			return this.print(this.map, this.cursor)
 		}
 	},
-	mounted (){
+	mounted () {
+		this.init()
 	},
 	methods:{
+		init (){
+			let d = getD(this.map)
+			this.cursor.x = d.x
+			this.cursor.y = d.y
+		},
 		mouse(ev){
 			console.log()
 		},
@@ -57,7 +64,7 @@ export default
 				this.cursor.x += x
 				this.cursor.y += y
 				let val = this.map[this.cursor.y][this.cursor.x]
-				console.log("val =", val)
+ 				console.log("val =", val)
 				if (val == 'D')
 					mel.start(0)
 				else if (val == '.') {
@@ -82,8 +89,7 @@ export default
 					this.cursor.x -= x
 					this.cursor.y -= y
 				if (e == 'drowned') {
-					this.cursor.x = 0
-					this.cursor.y = 0
+					this.init()
 					this.vals = []
 				}
 			}
