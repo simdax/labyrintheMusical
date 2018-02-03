@@ -51,33 +51,31 @@ export default
 				this.cursor.x += x
 				this.cursor.y += y
 				let val = this.map[this.cursor.y][this.cursor.x]
-				console.log(val)
-				if (val == '.')
-				{
-					console.log("wall!")
-					throw(error)
+				console.log("val =", val)
+				if (val == '.') {
+					console.log('wall!')
+					throw('wall')
 				}
-				if (val == 'X')
-				{
-					console.log("drowned!")
-					console.log(this.cursor.x, this.cursor.y)
-					this.cursor.x = 1
-					this.cursor.y = 0
-					throw(error)
+				if (val == 'X') {
+					console.log('drowned!')
+					throw('drowned')
 				}
-				this.piano.triggerAttackRelease(
+			 	this.piano.triggerAttackRelease(
 					Tone.Frequency(59 + val, "midi").toNote(), '8n')
 				this.vals.push(val)
 			}
 			catch (e) {
 				error.start()
-				console.log("nope")
-				this.piano.triggerRelease()
-				this.cursor.x -= x
-				this.cursor.y -= y
+				console.log(e ? 'oups' : e)
+					this.piano.triggerRelease()
+					this.cursor.x -= x
+					this.cursor.y -= y
+				if (e == 'drowned') {
+					this.cursor.x = 0
+					this.cursor.y = 0
+				}
 			}
 			finally {
-				//				this.
 			}
 		}
 	}
