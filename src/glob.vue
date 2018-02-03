@@ -49,7 +49,7 @@ export default
 	data() {
 		return {
 			win: 0,
-			sol: ["1","2","3"]
+			sol: ["1","2","3"],
 			playable: true,
 			map: map,
 			cursor: {x: 0, y: 0},
