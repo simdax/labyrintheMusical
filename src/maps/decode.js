@@ -15,7 +15,6 @@ export default function (i) {
 	let result = []
 	let j = 0
 	var lines = maps[i].split('\n');
-	console.log(i, lines)
 	lines.forEach(line => {
 		if (line[0])
 			this.map.push(line)

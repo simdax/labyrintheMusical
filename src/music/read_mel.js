@@ -13,6 +13,12 @@ import Tone from 'tone'
 
 let mels = [sound0, sound1, sound2, sound3, sound4, sound5, sound6, sound7, sound8, sound9]
 
+function get_solution (notes) {
+	return notes.map(note => {
+		return new Tone.Frequency(note).toMidi() - 48
+	})
+}
+
 export default function (i) {
 	let melodie = mels[i]
 	let mel = melodie.split('\n')
@@ -24,4 +30,5 @@ export default function (i) {
 		begin.add(rythmes[i])
 		this.melodie.push({note, dur: rythmes[i], time: abs})
 	})
+	this.sol = get_solution(notes)
 }

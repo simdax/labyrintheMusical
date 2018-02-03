@@ -12,6 +12,9 @@
 		{{line}}
 	</div>
   </div>
+  <div id='el'v-if="win">
+	WIN
+  </div>
 </div>
 </template>
 
@@ -49,12 +52,12 @@ export default
 		}
 	},
 	created () {
-		decode.bind(this)(0)
-		get_mel.bind(this)(0)
-		console.log(this.melodie)
+		decode.bind(this)(2)
+		get_mel.bind(this)(2)
 		this.init()
 	},
 	methods:{
+		
 		init (){
 			let d = getD(this.map)
 			this.cursor.x = d.x
@@ -63,7 +66,6 @@ export default
 		},
 		play(){
 			let dur = this.melodie[this.melodie.length - 2].time
-			console.log(dur)
 			new Tone.Part((time, val) => {
 				this.playable = val
 			}, [[0, false], [dur, true]]).start()
@@ -72,9 +74,6 @@ export default
 					piano.triggerAttackRelease(event.note, event.dur)				
 				} catch (e) {}
 			}, this.melodie).start()
-		},
-		mouse(ev){
-			console.log()
 		},
 		go (x, y) {
 			if (this.playable)
@@ -90,5 +89,8 @@ export default
 </script>
 
 <style>
-
+#el{
+	font-size: 50px;
+	color: red;
+}
 </style>
