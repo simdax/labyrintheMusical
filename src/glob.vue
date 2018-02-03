@@ -78,7 +78,7 @@ export default
 				this.playable = val
 			}, [[0, false], [dur, true]]).start()
 			new Tone.Part((time, event) => {
-				synth.triggerAttackRelease(event.note, event.dur)
+				piano.triggerAttackRelease(event.note, event.dur)
 			}, melodie).start()
 		},
 		mouse(ev){
