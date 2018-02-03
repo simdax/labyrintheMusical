@@ -3,7 +3,7 @@
   <events></events>
   <!-- <router-view/> -->
   <video id="video" loop autoplay src="static/fog.mp4"></video>
-  </div>
+</div>
 </template>
 
 <script>
@@ -11,6 +11,7 @@
 import comp from '@/components/compo2'
 import EventBus from './event-bus.js';
 import Events from '@/glob.vue';
+import Tone from 'tone'
 
 export default {
 	name: 'App',

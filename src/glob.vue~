@@ -1,9 +1,0 @@
-<template>
-  <GlobalEvents
-	@keydown.37="go(1)"
-	@keydown.38="go(2)"
-	@keydown.39="go(3)"
-	@keydown.40="go(4)"
->	</GlobalEvents>  
-</template>
-

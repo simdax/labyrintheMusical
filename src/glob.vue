@@ -12,7 +12,7 @@
 
 import GlobalEvents from 'vue-global-events';
 import map from '@/map';
-import piano from '@/music.js'
+import {synth, piano} from '@/music.js'
 import Tone from 'tone'
 
 export default
@@ -23,7 +23,7 @@ export default
 		return {
 			map: map,
 			cursor: {x:0, y:0},
-			piano: piano,
+			piano, synth,
 			val: 0
 		}
 	},
@@ -37,10 +37,10 @@ export default
 				this.cursor.y += y
 				this.val = this.map[this.cursor.y][this.cursor.x]
 				this.piano.triggerAttackRelease(
-					Tone.Frequency(60 + this.val, "midi").toNote(), '8n')
+					Tone.Frequency(59 + this.val, "midi").toNote(), '8n')
 			}
 			catch (error) {
-				console.log("FUCK OFF", error)
+				console.log("pas de note a", this.val , error)
 				this.piano.triggerRelease()
 				this.val = 0
 				this.cursor.x = 0;
