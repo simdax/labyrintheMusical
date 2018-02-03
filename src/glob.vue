@@ -18,11 +18,11 @@
 <script>
 
 import GlobalEvents from 'vue-global-events';
+import Tone from 'tone'
 import map from '@/maps/decode';
 import print from '@/maps/print_map'
 import getD from '@/maps/get_D_pos'
 import {synth, piano, error} from '@/music.js'
-import Tone from 'tone'
 import melodie from '@/music/read_mel.js'
 
 let mel = new Tone.Part((time, event) => {
@@ -77,8 +77,10 @@ export default
 				}
 				else 
 				{
+					val = parseInt(val)
+					//console.log(val, Tone.Frequency(60 + val, "midi").toNote())
 			 		this.piano.triggerAttackRelease(
-						Tone.Frequency(59 + val, "midi").toNote(), '8n')
+					Tone.Frequency(59 + val, "midi").toNote(), '8n')
 					this.vals.push(val)
 				}
 			}
