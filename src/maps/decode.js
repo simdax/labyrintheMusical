@@ -1,4 +1,4 @@
-import map from './0.txt'
+import map from './db/00.txt'
 
 let result = []
 let j = 0
