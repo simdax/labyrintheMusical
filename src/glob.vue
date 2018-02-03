@@ -62,7 +62,7 @@ export default
 			}
 			catch (e) {
 				error.start()
-				console.log(e ? e : "pas de note a", this.val)
+				console.log("outside", this.val)
 				this.piano.triggerRelease()
 				this.cursor.x -= x
 				this.cursor.y -= y
