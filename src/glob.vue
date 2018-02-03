@@ -54,7 +54,7 @@ export default
 				console.log(val)
 				if (val == '.')
 				{
-					throw("un mur!")
+					throw new Error( "un mur!")
 				}
 				this.piano.triggerAttackRelease(
 					Tone.Frequency(59 + val, "midi").toNote(), '8n')
@@ -62,7 +62,7 @@ export default
 			}
 			catch (e) {
 				error.start()
-				console.log(e ? e : "pas de note a", this.val)
+				console.log("outside", this.val)
 				this.piano.triggerRelease()
 				this.cursor.x -= x
 				this.cursor.y -= y
