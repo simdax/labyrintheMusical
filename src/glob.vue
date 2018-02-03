@@ -57,9 +57,7 @@ export default
 			this.cursor.y = d.y
 		},
 		play(){
-			console.log("play")
-			console.log(new Tone.Time.addNow())
-			let mel = new Tone.Part((time, event) => {
+			new Tone.Part((time, event) => {
 				console.log(event)
 				synth.triggerAttackRelease(event.note, event.dur)
 			}, melodie).start()
