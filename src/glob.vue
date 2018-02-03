@@ -5,6 +5,7 @@
 	@keydown.39="go(1, 0)"
 	@keydown.38="go(0, -1)"
 	@keydown.40="go(0, 1)"
+	@keydown.space="init()"
 	@mousedown="mouse($event)"
 	/>
   <div>
