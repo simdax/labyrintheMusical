@@ -1,10 +1,8 @@
 <template>
 <div id="app" >
   <events></events>
-  <img src="./assets/logo.png">
-  <comp></comp>
   <!-- <router-view/> -->
-  <video controls loop autoplay src="static/fog.mp4"></video>
+  <video id="video" loop autoplay src="static/fog.mp4"></video>
   </div>
 </template>
 
@@ -21,6 +19,14 @@ export default {
 </script>
 
 <style>
+#video{
+	position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

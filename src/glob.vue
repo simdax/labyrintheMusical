@@ -4,6 +4,7 @@
 	@keydown.38="go(0, 1)"
 	@keydown.39="go(1, 0)"
 	@keydown.40="go(0, -1)"
+	@mousedown="mouse($event)"
 >	</GlobalEvents>  
 </template>
 
@@ -11,6 +12,8 @@
 
 import GlobalEvents from 'vue-global-events';
 import map from '@/map';
+import piano from '@/music.js'
+import Tone from 'tone'
 
 export default
 {
@@ -20,23 +23,31 @@ export default
 		return {
 			map: map,
 			cursor: {x:0, y:0},
+			piano: piano,
 			val: 0
 		}
 	},
 	methods:{
+		mouse(ev){
+			console.log()
+		},
 		go (x, y) {
 			try {
 				this.cursor.x += x
 				this.cursor.y += y
 				this.val = this.map[this.cursor.y][this.cursor.x]
-				console.log(this.cursor.x, this.cursor.y, this.val)
+				this.piano.triggerAttackRelease(
+					Tone.Frequency(60 + this.val, "midi").toNote(), '8n')
 			}
 			catch (error) {
 				console.log("FUCK OFF", error)
-			}
-			finally {
+				this.piano.triggerRelease()
+				this.val = 0
 				this.cursor.x = 0;
 				this.cursor.y = 0;
+			}
+			finally {
+//				this.
 			}
 		}
 	}
