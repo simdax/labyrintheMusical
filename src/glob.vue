@@ -19,9 +19,21 @@
 
 import GlobalEvents from 'vue-global-events';
 import map from '@/maps/decode';
-import print from '@/maps/print_map'
-import {synth, piano, error} from '@/music.js'
-import Tone from 'tone'
+import sol from '@/maps/solution';
+import print from '@/maps/print_map';
+import {synth, piano, error} from '@/music.js';
+import Tone from 'tone';
+
+function checkSolution(vals) {
+	vals.reserve()
+	while (sol[n] && vals[n + 1] == sol[n]) {
+		n++;
+	}
+	if (sol[n])
+		nope/
+	else
+		next level/
+}
 
 export default
 {
@@ -73,16 +85,10 @@ export default
 				if (e == 'drowned') {
 					this.cursor.x = 0
 					this.cursor.y = 0
-					clean_array(vals)
+					this.vals = []
 				}
 			}
 			finally {
-			}
-		},
-		clean_array(vals)
-		{
-			while (vals) {
-				vals.pop()
 			}
 		}
 	}
