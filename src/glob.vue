@@ -17,12 +17,19 @@
 
 <script>
 
-import GlobalEvents from 'vue-global-events';
-import map from '@/maps/decode';
-// import sol from '@/maps/solution';
-import print from '@/maps/print_map';
-import {synth, piano, error} from '@/music.js';
-import Tone from 'tone';
+import GlobalEvents from 'vue-global-events'
+import Tone from 'tone'
+import map from '@/maps/decode'
+import print from '@/maps/print_map'
+import getD from '@/maps/get_D_pos'
+import {synth, piano, error} from '@/music.js'
+import melodie from '@/music/read_mel.js'
+import go from '@/go'
+
+let mel = new Tone.Part((time, event) => {
+	console.log(event)
+	synth.triggerAttackRelease(event.note, event.dur)
+}, melodie).start(0)
 
 function checkSolution() {
 	let flag = 0
@@ -39,14 +46,15 @@ export default
 {
 	name: 'events',
 	components: {GlobalEvents},
-	data(){
+	data() {
 		return {
 			win: 0,
-			map: map,
-			cursor: {x:0, y:0},
-			print, piano, synth,
-			vals: [],
 			sol: ["1","2","3"]
+			playable: true,
+			map: map,
+			cursor: {x: 0, y: 0},
+			print, piano, synth, error,
+			vals: []
 		}
 	},
 	computed: {
@@ -54,9 +62,24 @@ export default
 			return this.print(this.map, this.cursor)
 		}
 	},
-	mounted (){
+	mounted () {
+		this.init()
 	},
 	methods:{
+		init (){
+			let d = getD(this.map)
+			this.cursor.x = d.x
+			this.cursor.y = d.y
+		},
+		play(){
+			let dur = melodie[melodie.length - 1].time
+			new Tone.Part((time, val) => {
+				this.playable = val
+			}, [[0, false], [dur, true]]).start()
+			new Tone.Part((time, event) => {
+				synth.triggerAttackRelease(event.note, event.dur)
+			}, melodie).start()
+		},
 		mouse(ev){
 			console.log()
 		},
@@ -90,11 +113,11 @@ export default
 					this.vals = []
 				}
 			}
-			finally {
-				checkSolution.bind(this)()
+			checkSolution.bind(this)()			
 				if (this.win)
 					console.log("oh putain")
-			}
+			if (this.playable)
+				go.bind(this)(x, y)
 		}
 	}
 }

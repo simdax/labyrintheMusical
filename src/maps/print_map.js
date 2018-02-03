@@ -1,8 +1,7 @@
+import clean_map from './without_obs'
+
 export default (map, position) => {
-	let copy =  map.map(line => line.split(''))
+	let copy =  clean_map(map)
 	copy[position.y][position.x] = "@"
-	// copy.forEach(line  => {
-	// 	console.log(line.join(""))
-	// })
 	return copy
 }

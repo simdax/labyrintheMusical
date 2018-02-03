@@ -12,6 +12,8 @@ import EventBus from './event-bus.js';
 import Events from '@/glob.vue';
 import Tone from 'tone'
 
+require('@/music/read_mel.js')
+
 export default {
 	name: 'App',
 	components: {Events}
@@ -23,8 +25,8 @@ export default {
 	position: fixed;
     right: 0;
     bottom: 0;
-    min-width: 100%; 
-    min-height: 100%;
+    /* min-width: 100%;  */
+    /* min-height: 100%; */
 }
 
 #app {
