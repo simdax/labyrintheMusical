@@ -26,11 +26,6 @@ import {synth, piano, error} from '@/music.js'
 import melodie from '@/music/read_mel.js'
 import go from '@/go'
 
-let mel = new Tone.Part((time, event) => {
-	console.log(event)
-	synth.triggerAttackRelease(event.note, event.dur)
-}, melodie).start(0)
-
 function checkSolution() {
 	let flag = 0
 	this.vals.forEach(function(val, index) {
@@ -98,7 +93,5 @@ export default
 </script>
 
 <style>
-  #map{
-	  z-index: 10
-  }
+
 </style>
