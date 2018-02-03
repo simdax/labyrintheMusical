@@ -30,7 +30,7 @@ function checkSolution(vals) {
 		n++;
 	}
 	if (sol[n])
-		nope/
+		return ()
 	else
 		next level/
 }
