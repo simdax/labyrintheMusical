@@ -11,7 +11,7 @@
 <script>
 
 import GlobalEvents from 'vue-global-events';
-import map from '@/map';
+import map from '@/maps/decode';
 import {synth, piano, error} from '@/music.js'
 import Tone from 'tone'
 
