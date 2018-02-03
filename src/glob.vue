@@ -6,6 +6,8 @@
 	@keydown.38="go(0, -1)"
 	@keydown.40="go(0, 1)"
 	@mousedown="mouse($event)"
+	@touchstart="debut($event)"
+	@touchend="fin($event)"
 	/>
   <div>
 	<div id="map" v-for="line in mapPrint">
@@ -17,6 +19,9 @@
 
 <script>
 
+import Hammer from 'hammerjs'
+console.log(Hammer)
+
 import GlobalEvents from 'vue-global-events'
 import Tone from 'tone'
 import map from '@/maps/decode'
@@ -26,6 +31,7 @@ import {synth, piano, error} from '@/music.js'
 import melodie from '@/music/read_mel.js'
 import go from '@/go'
 
+ 
 function checkSolution() {
 	let flag = 0
 	this.vals.forEach(function(val, index) {
@@ -36,6 +42,8 @@ function checkSolution() {
 	if (flag == this.sol.length)
 		this.win = 1
 }
+
+var ts
 
 export default
 {
@@ -61,7 +69,22 @@ export default
 		this.init()
 	},
 	methods:{
-		init (){
+	debut(e){
+		   ts = e.touches[0].clientY;
+
+	},
+	fin(e){
+		   var te = e.changedTouches[0].clientY;
+
+   if(ts > te+5){
+console.log('do') 
+  }else if(ts < te-5){
+console.log('hi') 
+   }
+	},
+	
+	
+	init (){
 			let d = getD(this.map)
 			this.cursor.x = d.x
 			this.cursor.y = d.y
