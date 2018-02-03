@@ -2,7 +2,7 @@
 <div id="app" >
   <events></events>
   <router-view/>
-  <!-- <video id="video" loop autoplay src="static/fog.mp4"></video> -->
+  <video id="video" loop autoplay src="static/fog.mp4"></video>
 </div>
 </template>
 
@@ -25,8 +25,8 @@ export default {
 	position: fixed;
     right: 0;
     bottom: 0;
-    /* min-width: 100%;  */
-    /* min-height: 100%; */
+    min-width: 100%;
+    min-height: 100%;
 }
 
 #app {
