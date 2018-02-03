@@ -49,7 +49,7 @@ export default
 	data() {
 		return {
 			win: 0,
-			sol: ["1","2","3"]
+			sol: ["1","2","3"],
 			playable: true,
 			map: map,
 			cursor: {x: 0, y: 0},
@@ -70,6 +70,7 @@ export default
 			let d = getD(this.map)
 			this.cursor.x = d.x
 			this.cursor.y = d.y
+			this.play()
 		},
 		play(){
 			let dur = melodie[melodie.length - 1].time
@@ -84,40 +85,13 @@ export default
 			console.log()
 		},
 		go (x, y) {
-			try {
-				this.cursor.x += x
-				this.cursor.y += y
-				let val = this.map[this.cursor.y][this.cursor.x]
-				console.log("val =", val)
-				if (val == '.') {
-					console.log('wall!')
-					throw('wall')
-				}
-				if (val == 'X') {
-					console.log('drowned!')
-					throw('drowned')
-				}
-			 	this.piano.triggerAttackRelease(
-					Tone.Frequency(59 + val, "midi").toNote(), '8n')
-				this.vals.push(val)
-			}
-			catch (e) {
-				error.start()
-				console.log(e ? 'oups' : e)
-					this.piano.triggerRelease()
-					this.cursor.x -= x
-					this.cursor.y -= y
-				if (e == 'drowned') {
-					this.cursor.x = 0
-					this.cursor.y = 0
-					this.vals = []
-				}
-			}
-			checkSolution.bind(this)()			
+			if (this.playable)
+			{
+				go.bind(this)(x, y)
+				checkSolution.bind(this)()			
 				if (this.win)
 					console.log("oh putain")
-			if (this.playable)
-				go.bind(this)(x, y)
+			}
 		}
 	}
 }
