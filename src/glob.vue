@@ -24,20 +24,10 @@ import {synth, piano, error} from '@/music.js'
 import Tone from 'tone'
 import melodie from '@/music/read_mel.js'
 
-console.log(melodie)
-// var part = new Tone.Part(function(time, note){
-// 	//the notes given as the second element in the array
-// 	//will be passed in as the second argument
-// 	console.log(note)
-// 	synth.triggerAttackRelease(note, "8n", time);
-// }, [[0, "C2"], ["0:2", "C3"], ["0:3:2", "G2"]]).start(1);
-
 let mel = new Tone.Part((time, event) => {
 	console.log(event)
 	synth.triggerAttackRelease(event.note, event.dur)
-}, melodie).start(0)
-
-// console.log(mel)
+}, melodie)
 
 export default
 {
@@ -67,7 +57,9 @@ export default
 				this.cursor.x += x
 				this.cursor.y += y
 				let val = this.map[this.cursor.y][this.cursor.x]
-//				console.log(this.map)
+				//				console.log(this.map)
+				if (val == 'D')
+					mel.start(0)
 				if (val == '.')
 					throw("un mur!")
 				this.piano.triggerAttackRelease(
