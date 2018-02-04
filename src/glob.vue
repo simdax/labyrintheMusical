@@ -6,6 +6,8 @@
 	@keydown.38="go(0, -1)"
 	@keydown.40="go(0, 1)"
 	@keydown.space="init"
+	@touchstart="debut($event)"
+	@touchend="fin($event)"
 	/>
   <div>
 	<div id="map" v-for="line in mapPrint">
@@ -30,6 +32,8 @@ import get_mel from '@/music/read_mel.js'
 import {synth, piano, error, success, warp} from '@/music.js'
 import go from '@/go'
 import checkSolution from "./check.js"
+
+var ys, xs
 
 export default
 {
@@ -56,6 +60,32 @@ export default
 		this.create(0)			
 	},
 	methods:{
+		debut(e){
+            ys = e.touches[0].clientY;
+            xs = e.touches[0].clientX;
+        },
+        fin(e){
+            var xe = e.changedTouches[0].clientX;
+            var ye = e.changedTouches[0].clientY;
+            if (Math.abs(xs - xe) > 5 || Math.abs(ys - ye))
+            {
+                if (Math.abs(xs - xe) > Math.abs(ys - ye))
+                {
+                    if (xs > xe) {
+                        this.go(-1, 0);
+                    }
+                    else
+                        this.go(1, 0);
+                }
+                else
+                {
+                    if (ys > ye)
+                        this.go(0, -1);
+                    else
+                        this.go(0, 1);
+                }
+            }
+        },
 		create(){
 			this.win = 0
 			this.map = []
