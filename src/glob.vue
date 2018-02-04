@@ -5,7 +5,7 @@
 	@keydown.39="go(1, 0)"
 	@keydown.38="go(0, -1)"
 	@keydown.40="go(0, 1)"
-	@keydown.space="init"
+	@keydown.space="create_zero"
 	@touchstart="debut($event)"
 	@touchend="fin($event)"
 	/>
@@ -29,7 +29,7 @@ import print from '@/maps/print_map'
 import decode from '@/maps/decode'
 import getD from '@/maps/get_D_pos'
 import get_mel from '@/music/read_mel.js'
-import {synth, piano, error, success, warp} from '@/music.js'
+import {synth, piano, error, success, warp, big_warp} from '@/music.js'
 import go from '@/go'
 import checkSolution from "./check.js"
 
@@ -47,7 +47,7 @@ export default
 			map: [], melodie: [], sol: [],
 			cursor: {x: 0, y: 0},
 			print,
-			piano, synth, error, warp,
+			piano, synth, error, warp, big_warp,
 			vals: []
 		}
 	},
@@ -57,9 +57,25 @@ export default
 		}
 	},
 	created () {
-		this.create(0)			
+		this.create()
+		Tone.Buffer.on('load', function() {
+			this.play_start();
+		}.bind(this))
 	},
 	methods:{
+		play_start(){
+			new Tone.Part((time, val) => {
+				if (val)
+					big_warp.start()
+				else
+					Vue.nextTick(this.play, this)
+			}, [["0:0:0", 1], ["0:2:0", 0]]).start()
+		},
+		create_zero(){
+			this.level = 0
+			this.create()
+			Vue.nextTick(this.play_start, this)
+		},
 		debut(e){
             ys = e.touches[0].clientY;
             xs = e.touches[0].clientX;
@@ -99,11 +115,7 @@ export default
 			this.vals = []
 			this.cursor.x = d.x
 			this.cursor.y = d.y
-			if (this.level == 0)
-				Tone.Buffer.on('load', function() {
-					this.play()
-				}.bind(this))
-			else
+			if (this.level != 0)
 				Vue.nextTick(this.play, this)
 		},
 		play(){

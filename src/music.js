@@ -39,4 +39,8 @@ let warp = new Tone.Player({
 	url: "/static/warp.wav"
 }).toMaster()
 
-export {piano, synth, error, success, warp}
+let big_warp = new Tone.Player({
+	url: "/static/big_warp.mp3"
+}).toMaster()
+
+export {piano, synth, error, success, warp, big_warp}

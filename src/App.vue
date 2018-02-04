@@ -4,7 +4,9 @@
   <router-view/>
   <div id="mask"
 	   @click="alpha -= 0.1"
-	   :style="{background:'rgba(0, 0, 0, ' + alpha + ')'}"> ma bite </div>
+	   :style="{background:'rgba(0, 0, 0, ' + alpha + ')'}">
+	Swipe to move. Space to restart.
+  </div>
   <video id="video" loop autoplay src="static/fog.mp4"></video>
 </div>
 </template>
@@ -21,7 +23,7 @@ export default {
 	name: 'App',
 	data(){
 		return {
-			alpha: 1
+			alpha: 0
 		}
 	},
 	components: {Events}
@@ -31,7 +33,8 @@ export default {
 <style>
 #mask{
 	z-index: 99;
-	color: red;
+	color: white;
+	font-size: 20px;
 	position: fixed;
     right: 0;
     bottom: 0;
