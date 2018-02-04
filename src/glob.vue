@@ -29,7 +29,7 @@ import print from '@/maps/print_map'
 import decode from '@/maps/decode'
 import getD from '@/maps/get_D_pos'
 import get_mel from '@/music/read_mel.js'
-import {synth, piano, error, success, warp, big_warp} from '@/music.js'
+import {synth, piano, error, success, warp, big_warp, plouf} from '@/music.js'
 import go from '@/go'
 import checkSolution from "./check.js"
 
@@ -47,7 +47,7 @@ export default
 			map: [], melodie: [], sol: [],
 			cursor: {x: 0, y: 0},
 			print,
-			piano, synth, error, warp, big_warp,
+			piano, synth, error, warp, big_warp, plouf,
 			vals: []
 		}
 	},

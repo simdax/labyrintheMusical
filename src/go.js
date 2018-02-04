@@ -39,6 +39,7 @@ export default function (x, y) {
 		this.cursor.x -= x
 		this.cursor.y -= y
 		if (e == 'drowned') {
+			this.plouf.start()
 			this.init()
 			this.vals = []
 		}
