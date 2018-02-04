@@ -9,7 +9,7 @@
 	/>
   <div>
 	<div id="map" v-for="line in mapPrint">
-		{{line}}
+	  {{line}}
 	</div>
   </div>
   <div id='el'v-if="win">
@@ -22,12 +22,12 @@
 
 import GlobalEvents from 'vue-global-events'
 import Tone from 'tone'
-
+import Vue from 'vue'
 import print from '@/maps/print_map'
 import decode from '@/maps/decode'
 import getD from '@/maps/get_D_pos'
 import get_mel from '@/music/read_mel.js'
-import {synth, piano, error} from '@/music.js'
+import {synth, piano, error, success} from '@/music.js'
 import go from '@/go'
 import checkSolution from "./check.js"
 
@@ -52,7 +52,7 @@ export default
 		}
 	},
 	created () {
-		this.create(0)
+		this.create(0)			
 	},
 	methods:{
 		create(){
@@ -68,13 +68,18 @@ export default
 			this.vals = []
 			this.cursor.x = d.x
 			this.cursor.y = d.y
-			this.play()
+			if (this.level == 0)
+				Tone.Buffer.on('load', function() {
+					this.play()
+				}.bind(this))
+			else
+				Vue.nextTick(this.play, this)
 		},
 		play(){
-			let dur = this.melodie[this.melodie.length - 2].time
+			let dur = Tone.Time(this.melodie[this.melodie.length - 2].time).add("2n")
 			new Tone.Part((time, val) => {
 				this.playable = val
-			}, [[0, false], [dur, true]]).start()
+			}, [["0:0:0", false], [dur, true]]).start()
 			new Tone.Part((time, event) => {
 				try{	
 					piano.triggerAttackRelease(event.note, event.dur)				
@@ -88,8 +93,15 @@ export default
 				checkSolution.bind(this)()			
 				if (this.win)
 				{
-					this.level += 1
-					this.create()
+					new Tone.Part((t, val) => {
+						if (val)
+						{
+							this.level += 1
+							this.create()
+						}
+						else 
+							success.start()
+					}, [["0", 0], ["0:2:0", 1]]).start()
 				}
 			}
 		}
