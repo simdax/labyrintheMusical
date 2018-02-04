@@ -20,9 +20,6 @@
 
 <script>
 
-import Hammer from 'hammerjs'
-console.log(Hammer)
-
 import GlobalEvents from 'vue-global-events'
 import Tone from 'tone'
 

@@ -5,8 +5,7 @@ export default function (x, y) {
 		this.cursor.x += x
 		this.cursor.y += y
 		let val = this.map[this.cursor.y][this.cursor.x]
- 		console.log("val =", val)
-		if (val == 'D')
+ 		if (val == 'D')
 			this.play()
 		else if (val == '.') {
 			console.log('wall!')
@@ -27,7 +26,7 @@ export default function (x, y) {
 	}
 	catch (e) {
 		this.error.start()
-		console.log(e ? 'inconnu' : e)
+		console.log(e ? 'outside' : e)
 		this.piano.triggerRelease()
 		this.cursor.x -= x
 		this.cursor.y -= y
