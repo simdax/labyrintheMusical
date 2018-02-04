@@ -59,6 +59,8 @@ export default
 	created () {
 		this.create()
 		Tone.Buffer.on('load', function() {
+			// console.log("io")
+			// plouf.start()
 			this.play_start();
 		}.bind(this))
 	},

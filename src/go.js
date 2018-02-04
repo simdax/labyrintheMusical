@@ -33,7 +33,6 @@ export default function (x, y) {
 		}
 	}
 	catch (e) {
-		this.error.start()
 		console.log(e ? 'inconnu' : e)
 		this.piano.triggerRelease()
 		this.cursor.x -= x
@@ -41,7 +40,8 @@ export default function (x, y) {
 		if (e == 'drowned') {
 			this.plouf.start()
 			this.init()
-			this.vals = []
 		}
+		else
+			this.error.start()
 	}
 }
