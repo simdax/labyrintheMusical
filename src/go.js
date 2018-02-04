@@ -14,7 +14,7 @@ export default function (x, y) {
 					this.warp.start()
 				else
 					Vue.nextTick(this.play, this)
-			}.bind(this), [["0", 1], ["0:0:2", 0]]).start()
+			}.bind(this), [["0", 1], ["0:0:3", 0]]).start()
 		}
 		else if (val == '.') {
 			console.log('wall!')
@@ -29,7 +29,6 @@ export default function (x, y) {
 			val = parseInt(val)
 			this.piano.triggerAttackRelease(
 				Tone.Frequency(48 + val, "midi").toNote(), '8n')
-			//			console.log("add note")
 			this.vals.push(val)
 		}
 	}
