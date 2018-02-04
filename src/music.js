@@ -35,6 +35,8 @@ let success = new Tone.Player({
 	url: "/static/success.wav"
 }).toMaster()
 
-//window.p = piano
+let warp = new Tone.Player({
+	url: "/static/warp.wav"
+}).toMaster()
 
-export {piano, synth, error, success}
+export {piano, synth, error, success, warp}

@@ -27,7 +27,7 @@ import print from '@/maps/print_map'
 import decode from '@/maps/decode'
 import getD from '@/maps/get_D_pos'
 import get_mel from '@/music/read_mel.js'
-import {synth, piano, error, success} from '@/music.js'
+import {synth, piano, error, success, warp} from '@/music.js'
 import go from '@/go'
 import checkSolution from "./check.js"
 
@@ -42,12 +42,13 @@ export default
 			playable: true,
 			map: [], melodie: [], sol: [],
 			cursor: {x: 0, y: 0},
-			print, piano, synth, error,
+			print,
+			piano, synth, error, warp,
 			vals: []
 		}
 	},
 	computed: {
-		mapPrint(){
+		mapPrint() {
 			return this.print(this.map, this.cursor)
 		}
 	},

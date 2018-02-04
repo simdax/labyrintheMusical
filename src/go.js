@@ -1,13 +1,21 @@
 import Tone from 'tone'
+import Vue from 'vue'
 
 export default function (x, y) {
 	try {
 		this.cursor.x += x
 		this.cursor.y += y
 		let val = this.map[this.cursor.y][this.cursor.x]
- 		console.log("val =", val)
 		if (val == 'D')
-			this.play()
+		{
+			new Tone.Part(function (time, val) {
+				console.log(val)
+				if (val)
+					this.warp.start()
+				else
+					Vue.nextTick(this.play, this)
+			}.bind(this), [["0", 1], ["0:0:2", 0]]).start()
+		}
 		else if (val == '.') {
 			console.log('wall!')
 			throw('wall')
@@ -21,7 +29,7 @@ export default function (x, y) {
 			val = parseInt(val)
 			this.piano.triggerAttackRelease(
 				Tone.Frequency(48 + val, "midi").toNote(), '8n')
-//			console.log("add note")
+			//			console.log("add note")
 			this.vals.push(val)
 		}
 	}
