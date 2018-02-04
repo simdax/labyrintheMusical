@@ -1,2 +1,2 @@
-f3 e3 d3 c3
-8n 8n 8n 2n
+e3 f3 g3 g3
+4n 4n 4n 4n
