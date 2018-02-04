@@ -20,8 +20,8 @@ export default function (x, y) {
 		{
 			val = parseInt(val)
 			this.piano.triggerAttackRelease(
-				Tone.Frequency(59 + val, "midi").toNote(), '8n')
-			console.log("add note")
+				Tone.Frequency(48 + val, "midi").toNote(), '8n')
+//			console.log("add note")
 			this.vals.push(val)
 		}
 	}

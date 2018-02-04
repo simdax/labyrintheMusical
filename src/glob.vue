@@ -5,14 +5,15 @@
 	@keydown.39="go(1, 0)"
 	@keydown.38="go(0, -1)"
 	@keydown.40="go(0, 1)"
-	@mousedown="mouse($event)"
-	@touchstart="debut($event)"
-	@touchend="fin($event)"
+	@keydown.space="init"
 	/>
   <div>
 	<div id="map" v-for="line in mapPrint">
 		{{line}}
 	</div>
+  </div>
+  <div id='el'v-if="win">
+	WIN
   </div>
 </div>
 </template>
@@ -24,24 +25,14 @@ console.log(Hammer)
 
 import GlobalEvents from 'vue-global-events'
 import Tone from 'tone'
-import map from '@/maps/decode'
-import print from '@/maps/print_map'
-import getD from '@/maps/get_D_pos'
-import {synth, piano, error} from '@/music.js'
-import melodie from '@/music/read_mel.js'
-import go from '@/go'
 
- 
-function checkSolution() {
-	let flag = 0
-	this.vals.forEach(function(val, index) {
-		if (this.sol[index] == val) {
-			flag += 1
-		}
-	}.bind(this))
-	if (flag == this.sol.length)
-		this.win = 1
-}
+import print from '@/maps/print_map'
+import decode from '@/maps/decode'
+import getD from '@/maps/get_D_pos'
+import get_mel from '@/music/read_mel.js'
+import {synth, piano, error} from '@/music.js'
+import go from '@/go'
+import checkSolution from "./check.js"
 
 var ts
 
@@ -52,9 +43,9 @@ export default
 	data() {
 		return {
 			win: 0,
-			sol: ["1","2","3"],
+			level: 0,
 			playable: true,
-			map: map,
+			map: [], melodie: [], sol: [],
 			cursor: {x: 0, y: 0},
 			print, piano, synth, error,
 			vals: []
@@ -65,42 +56,35 @@ export default
 			return this.print(this.map, this.cursor)
 		}
 	},
-	mounted () {
-		this.init()
+	created () {
+		this.create(0)
 	},
 	methods:{
-	debut(e){
-		   ts = e.touches[0].clientY;
-
-	},
-	fin(e){
-		   var te = e.changedTouches[0].clientY;
-
-   if(ts > te+5){
-console.log('do') 
-  }else if(ts < te-5){
-console.log('hi') 
-   }
-	},
-	
-	
-	init (){
+		create(){
+			this.win = 0
+			this.map = []
+			this.melodie = []
+			decode.bind(this)(this.level)
+			get_mel.bind(this)(this.level)
+			this.init()
+		},
+		init (){
 			let d = getD(this.map)
+			this.vals = []
 			this.cursor.x = d.x
 			this.cursor.y = d.y
 			this.play()
 		},
 		play(){
-			let dur = melodie[melodie.length - 1].time
+			let dur = this.melodie[this.melodie.length - 2].time
 			new Tone.Part((time, val) => {
 				this.playable = val
 			}, [[0, false], [dur, true]]).start()
 			new Tone.Part((time, event) => {
-				piano.triggerAttackRelease(event.note, event.dur)
-			}, melodie).start()
-		},
-		mouse(ev){
-			console.log()
+				try{	
+					piano.triggerAttackRelease(event.note, event.dur)				
+				} catch (e) {}
+			}, this.melodie).start()
 		},
 		go (x, y) {
 			if (this.playable)
@@ -108,7 +92,10 @@ console.log('hi')
 				go.bind(this)(x, y)
 				checkSolution.bind(this)()			
 				if (this.win)
-					console.log("oh putain")
+				{
+					this.level += 1
+					this.create()
+				}
 			}
 		}
 	}
@@ -116,5 +103,8 @@ console.log('hi')
 </script>
 
 <style>
-
+#el{
+	font-size: 50px;
+	color: red;
+}
 </style>
