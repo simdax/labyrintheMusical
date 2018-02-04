@@ -2,6 +2,9 @@
 <div id="app" >
   <events></events>
   <router-view/>
+  <div id="mask"
+	   @click="alpha -= 0.1"
+	   :style="{background:'rgba(0, 0, 0, ' + alpha + ')'}"> ma bite </div>
   <video id="video" loop autoplay src="static/fog.mp4"></video>
 </div>
 </template>
@@ -16,11 +19,26 @@ require('@/music/read_mel.js')
 
 export default {
 	name: 'App',
+	data(){
+		return {
+			alpha: 1
+		}
+	},
 	components: {Events}
 }
 </script>
 
 <style>
+#mask{
+	z-index: 99;
+	color: red;
+	position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;	
+}
+
 #video{
 	position: fixed;
     right: 0;
