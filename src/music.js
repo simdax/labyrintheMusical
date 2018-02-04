@@ -1,5 +1,12 @@
 import Tone from 'tone'
 
+
+new Tone.Player({
+	url: "static/ambiance.mp3",
+	loop: true,
+	autostart: true
+}).toMaster()
+
 var synth = new Tone.Synth().toMaster()
 
 let piano = new Tone.Sampler({

@@ -1,6 +1,5 @@
 export default function checkSolution() {
 	let flag = 0
-	console.log("ta grosse mere")
 	this.vals.forEach(function(val, index) {
 		if (this.sol[flag] == val) {
 			flag += 1
