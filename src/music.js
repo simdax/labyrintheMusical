@@ -24,6 +24,10 @@ let error = new Tone.Player({
 	url: "/static/error.wav"
 }).toMaster()
 
+let success = new Tone.Player({
+	url: "/static/success.wav"
+}).toMaster()
+
 //window.p = piano
 
-export {piano, synth, error}
+export {piano, synth, error, success}
