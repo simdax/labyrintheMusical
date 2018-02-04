@@ -6,6 +6,9 @@
 	@keydown.38="go(0, -1)"
 	@keydown.40="go(0, 1)"
 	@keydown.space="init"
+	@mousedown="mouse($event)"
+	@touchstart="debut($event)"
+	@touchend="fin($event)"
 	/>
   <div>
 	<div id="map" v-for="line in mapPrint">
@@ -31,7 +34,8 @@ import {synth, piano, error, success} from '@/music.js'
 import go from '@/go'
 import checkSolution from "./check.js"
 
-var ts
+var ys
+var xs
 
 export default
 {
@@ -68,17 +72,18 @@ export default
 				{
 					if (Math.abs(xs - xe) > Math.abs(ys - ye))
 					{
-						if (xs > xe)
-							console.log('left');
+						if (xs > xe) {
+							this.go(-1, 0);
+						}
 						else
-							console.log('right');
+							this.go(1, 0);
 					}
 					else
 					{
 						if (ys > ye)
-							console.log('up');
+							this.go(0, -1);
 						else
-							console.log('down');
+							this.go(0, 1);
 					}
 				}
 			},
