@@ -1,5 +1,12 @@
 import Tone from 'tone'
 
+
+new Tone.Player({
+	url: "static/ambiance.mp3",
+	loop: true,
+	autostart: true
+}).toMaster()
+
 var synth = new Tone.Synth().toMaster()
 
 let piano = new Tone.Sampler({
@@ -24,6 +31,12 @@ let error = new Tone.Player({
 	url: "/static/error.wav"
 }).toMaster()
 
-//window.p = piano
+let success = new Tone.Player({
+	url: "/static/success.wav"
+}).toMaster()
 
-export {piano, synth, error}
+let warp = new Tone.Player({
+	url: "/static/warp.wav"
+}).toMaster()
+
+export {piano, synth, error, success, warp}

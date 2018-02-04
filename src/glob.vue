@@ -5,30 +5,35 @@
 	@keydown.39="go(1, 0)"
 	@keydown.38="go(0, -1)"
 	@keydown.40="go(0, 1)"
-	@mousedown="mouse($event)"
+	@keydown.space="init"
+	@touchstart="debut($event)"
+	@touchend="fin($event)"
 	/>
   <div>
 	<div id="map" v-for="line in mapPrint">
-		{{line}}
+	  {{line}}
 	</div>
+  </div>
+  <div id='el'v-if="win">
+	WIN
   </div>
 </div>
 </template>
 
 <script>
 
-import GlobalEvents from 'vue-global-events';
+import GlobalEvents from 'vue-global-events'
 import Tone from 'tone'
-import map from '@/maps/decode';
+import Vue from 'vue'
 import print from '@/maps/print_map'
+import decode from '@/maps/decode'
 import getD from '@/maps/get_D_pos'
-import {synth, piano, error} from '@/music.js'
-import melodie from '@/music/read_mel.js'
+import get_mel from '@/music/read_mel.js'
+import {synth, piano, error, success, warp} from '@/music.js'
+import go from '@/go'
+import checkSolution from "./check.js"
 
-let mel = new Tone.Part((time, event) => {
-	console.log(event)
-	synth.triggerAttackRelease(event.note, event.dur)
-}, melodie)
+var ys, xs
 
 export default
 {
@@ -36,63 +41,98 @@ export default
 	components: {GlobalEvents},
 	data() {
 		return {
-			map: map,
+			win: 0,
+			level: 0,
+			playable: true,
+			map: [], melodie: [], sol: [],
 			cursor: {x: 0, y: 0},
-			print, piano, synth,
+			print,
+			piano, synth, error, warp,
 			vals: []
 		}
 	},
 	computed: {
-		mapPrint(){
+		mapPrint() {
 			return this.print(this.map, this.cursor)
 		}
 	},
-	mounted () {
-		this.init()
+	created () {
+		this.create(0)			
 	},
 	methods:{
+		debut(e){
+            ys = e.touches[0].clientY;
+            xs = e.touches[0].clientX;
+        },
+        fin(e){
+            var xe = e.changedTouches[0].clientX;
+            var ye = e.changedTouches[0].clientY;
+            if (Math.abs(xs - xe) > 5 || Math.abs(ys - ye))
+            {
+                if (Math.abs(xs - xe) > Math.abs(ys - ye))
+                {
+                    if (xs > xe) {
+                        this.go(-1, 0);
+                    }
+                    else
+                        this.go(1, 0);
+                }
+                else
+                {
+                    if (ys > ye)
+                        this.go(0, -1);
+                    else
+                        this.go(0, 1);
+                }
+            }
+        },
+		create(){
+			this.win = 0
+			this.map = []
+			this.melodie = []
+			decode.bind(this)(this.level)
+			get_mel.bind(this)(this.level)
+			this.init()
+		},
 		init (){
 			let d = getD(this.map)
+			this.vals = []
 			this.cursor.x = d.x
 			this.cursor.y = d.y
+			if (this.level == 0)
+				Tone.Buffer.on('load', function() {
+					this.play()
+				}.bind(this))
+			else
+				Vue.nextTick(this.play, this)
 		},
-		mouse(ev){
-			console.log()
+		play(){
+			let dur = Tone.Time(this.melodie[this.melodie.length - 2].time).add("2n")
+			new Tone.Part((time, val) => {
+				this.playable = val
+			}, [["0:0:0", false], [dur, true]]).start()
+			new Tone.Part((time, event) => {
+				try{	
+					piano.triggerAttackRelease(event.note, event.dur)				
+				} catch (e) {}
+			}, this.melodie).start()
 		},
 		go (x, y) {
-			try {
-				this.cursor.x += x
-				this.cursor.y += y
-				let val = this.map[this.cursor.y][this.cursor.x]
- 				console.log("val =", val)
-				if (val == 'D')
-					mel.start(0)
-				else if (val == '.') {
-					console.log('wall!')
-					throw('wall')
-				}
-				else if (val == 'X') {
-					console.log('drowned!')
-					throw('drowned')
-				}
-				else 
+			if (this.playable)
+			{
+				go.bind(this)(x, y)
+				checkSolution.bind(this)()			
+				if (this.win)
 				{
-					val = parseInt(val)
-					//console.log(val, Tone.Frequency(60 + val, "midi").toNote())
-			 		this.piano.triggerAttackRelease(
-					Tone.Frequency(59 + val, "midi").toNote(), '8n')
-					this.vals.push(val)
-				}
-			}
-			catch (e) {
-				error.start()
-				console.log(e ? 'inconnu' : e)
-					this.piano.triggerRelease()
-					this.cursor.x -= x
-					this.cursor.y -= y
-				if (e == 'drowned') {
-					this.init()
-					this.vals = []
+					new Tone.Part((t, val) => {
+						if (val)
+						{
+							this.level += 1
+							this.create()
+						}
+						else 
+							success.start()
+					}, [["0", 0], ["0:2:0", 1]]).start()
 				}
 			}
 		}
@@ -101,7 +141,8 @@ export default
 </script>
 
 <style>
-  #map{
-	  z-index: 10
-  }
+#el{
+	font-size: 50px;
+	color: red;
+}
 </style>
